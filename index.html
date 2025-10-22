@@ -86,7 +86,7 @@
             text-align: center;
         }
         
-        section:nth-child(odd) {
+        section:nth-child(even) { /* Switched to even for better alternating */
             background-color: var(--background-light);
         }
 
@@ -127,7 +127,48 @@
         }
         
         /* --- Ads --- */
-        .ads-grid {
+        .ads-grid-horizontal {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5em;
+            margin-top: 2em;
+            align-items: flex-start;
+        }
+
+        .ad-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 1em;
+            flex: 1 1 400px;
+            max-width: 450px;
+            text-align: left;
+        }
+        
+        .ad-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        .ad-card a:hover img {
+            opacity: 0.85;
+        }
+
+        .ad-card-caption {
+            margin-top: 1em;
+            padding: 0 0.5em;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .ad-card-caption strong {
+            color: var(--header-color);
+        }
+
+        .ads-grid-vertical {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -135,7 +176,7 @@
             margin-top: 2em;
         }
         
-        .ad-item {
+        .ad-item-vertical {
             width: 100%;
             max-width: 800px;
             height: auto;
@@ -144,7 +185,7 @@
             transition: transform 0.3s ease;
         }
 
-        .ad-item:hover {
+        .ad-item-vertical:hover {
             transform: scale(1.03);
         }
         
@@ -313,14 +354,39 @@
             </div>
         </section>
 
-        <section id="ads-examples">
+        <section id="br-mx-examples">
             <div class="container">
-                <h2>Ad Examples</h2>
-                <p>We analyzed some of the ads used in XM's Google Ads campaigns.</p>
-                <div class="ads-grid">
-                    <img src="XM1.png" alt="XM Ad Example 1" class="ad-item">
-                    <img src="XM2.png" alt="XM Ad Example 2" class="ad-item">
-                    <img src="XM3.png" alt="XM Ad Example 3" class="ad-item">
+                <h2>Examples from Brazil & Mexico</h2>
+                <p>Specific ad examples captured for high-value search terms in Brazil and Mexico.</p>
+                <div class="ads-grid-horizontal">
+                    <div class="ad-card">
+                        <a href="https://www.xm.com/landing/promo-shares/pt?gid=227703&gad_source=1&gad_campaignid=20912075024&gbraid=0AAAAADQ7mB34NoFv4IAswC1PYs0udDDtG&gclid=EAIaIQobChMIrqmdye-3kAMVVWdIAB2ycQy2EAAYASAAEgLfM_D_BwE" target="_blank" rel="noopener noreferrer">
+                            <img src="Brasil - fx xm.png" alt="Ad example from Brazil">
+                        </a>
+                        <div class="ad-card-caption">
+                            <p><strong>Country:</strong> Brazil<br><strong>Search Term:</strong> "fx xm"</p>
+                        </div>
+                    </div>
+                    <div class="ad-card">
+                        <a href="https://www.xm.com/landing/promo-shares/es?gid=221901&gad_source=1&gad_campaignid=20512278944&gbraid=0AAAAADQ7mB1UCJpKsMSmvD1et1Zv9bbd4&gclid=EAIaIQobChMI4qfDvPe3kAMVKkNIAB0Q_SLvEAAYASAAEgIlzfD_BwE" target="_blank" rel="noopener noreferrer">
+                            <img src="Mexico - forex trading.png" alt="Ad example from Mexico">
+                        </a>
+                        <div class="ad-card-caption">
+                            <p><strong>Country:</strong> Mexico<br><strong>Search Term:</strong> "forex trading"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="more-ads-examples">
+            <div class="container">
+                <h2>More Ad Examples</h2>
+                <p>Further ad variations used in XM's global Google Ads campaigns.</p>
+                <div class="ads-grid-vertical">
+                    <img src="XM1.png" alt="XM Ad Example 1" class="ad-item-vertical">
+                    <img src="XM2.png" alt="XM Ad Example 2" class="ad-item-vertical">
+                    <img src="XM3.png" alt="XM Ad Example 3" class="ad-item-vertical">
                 </div>
             </div>
         </section>
