@@ -127,12 +127,25 @@
         }
         
         /* --- Ads --- */
-        .ads-image {
-            max-width: 100%;
+        .ads-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2em;
+            margin-top: 2em;
+        }
+        
+        .ad-item {
+            flex: 1 1 300px; /* Grow, shrink, with a base width of 300px */
+            max-width: 350px;
             height: auto;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-top: 2em;
+            transition: transform 0.3s ease;
+        }
+
+        .ad-item:hover {
+            transform: scale(1.05);
         }
         
         /* --- Keywords Dropdown --- */
@@ -279,7 +292,11 @@
             <div class="container">
                 <h2>Ad Examples</h2>
                 <p>We analyzed some of the ads used in XM's Google Ads campaigns.</p>
-                <img src="https://i.imgur.com/k6uYqC3.jpeg" alt="Examples of XM ads" class="ads-image">
+                <div class="ads-grid">
+                    <img src="XM1.png" alt="XM Ad Example 1" class="ad-item">
+                    <img src="XM2.png" alt="XM Ad Example 2" class="ad-item">
+                    <img src="XM3.png" alt="XM Ad Example 3" class="ad-item">
+                </div>
             </div>
         </section>
 
