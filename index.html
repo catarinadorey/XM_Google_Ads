@@ -137,7 +137,7 @@
         
         .ad-item {
             width: 100%;
-            max-width: 800px; /* Increased max-width for even larger size */
+            max-width: 800px;
             height: auto;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -362,9 +362,12 @@
             const countriesData = [
                 { name: 'Argentina', code: 'AR' }, { name: 'Australia', code: 'AU' }, { name: 'Austria', code: 'AT' },
                 { name: 'Brazil', code: 'BR' }, { name: 'Canada', code: 'CA' }, { name: 'Chile', code: 'CL' },
-                { name: 'Germany', code: 'DE' }, { name: 'Spain', code: 'ES' }, { name: 'Italy', code: 'IT' },
-                { name: 'Mexico', code: 'MX' }, { name: 'Portugal', code: 'PT' }, { name: 'South Africa', code: 'ZA' },
-                { name: 'UK', code: 'GB' }, { name: 'USA', code: 'US' }
+                { name: 'Colombia', code: 'CO' }, { name: 'Egypt', code: 'EG' }, { name: 'Germany', code: 'DE' }, 
+                { name: 'Indonesia', code: 'ID' }, { name: 'Israel', code: 'IL' }, { name: 'Italy', code: 'IT' }, 
+                { name: 'Malaysia', code: 'MY' }, { name: 'Mexico', code: 'MX' }, { name: 'Nigeria', code: 'NG' },
+                { name: 'Philippines', code: 'PH' }, { name: 'Portugal', code: 'PT' }, { name: 'South Africa', code: 'ZA' },
+                { name: 'Spain', code: 'ES' }, { name: 'Thailand', code: 'TH' }, { name: 'UK', code: 'GB' }, 
+                { name: 'USA', code: 'US' }, { name: 'Vietnam', code: 'VN' }
             ];
 
             const keywordsData = {
@@ -384,6 +387,7 @@
                 'Chile': ['metatrader 5', 'xm broker', 'traiding', 'forex chile', 'forex trading', 'copy trading', 'mejor broker chile', 'bitmex', 'trading forex', 'metatrader 4 pc', 'descargar mt4', 'crypto exchange', 'metatrader4', 'meta trader 4', 'invertir en bitcoins', 'fx trading', 'ether usd', 'gamestop stock price', 'forex que es', 'ethusd', 'crypto trading', 'go4rex chile', 'ontega plataforma', 'e trading', 'indice nikkei', 'crypto exchanges', 'trading crypto', 'meta trading 4', 'trader forex', 'metatrader 4 mac', 'que es el forex', 'mx broker', 'forex en chile', 'criptomonedas inversiones', 'xm trades', 'que forex', 'como invertir en forex', 'trades forex', 'forex chile reclamos', 'crypto market app', 'meta 5 trader', 'crypto bot trading', 'copy a trader', 'crypto trade', 'como invertir en s&p 500', 'aprender forex', 'bitcoins stock', 'gameshop stock', 'crypto traders', 'forex traders', 'hsi index', 'traders forex', 'stocks cat', 'forex invertir', 'hotforex mt4', 'bitcoins price', 'xm account', 'forex trade', 'bitcoins trading', 'bitcoins comprar', 'trading xm', 'exchanges crypto', 's&p 500 stock', 'dax alemán', 'mercados forex', 'bitcoins trade', 'trader crypto', 'future dow jones', 'copy traders', 'xm usuarios', 'que son forex', 'ibex index']
             };
 
+            // Sort countries alphabetically
             countriesData.sort((a, b) => a.name.localeCompare(b.name));
 
             const countriesGrid = document.querySelector('.countries-grid');
@@ -391,7 +395,9 @@
             const chartLabels = [];
             const chartData = [];
 
+            // Generate Country Cards and Keyword Dropdowns
             countriesData.forEach(country => {
+                // Create Country Card
                 const card = document.createElement('div');
                 card.className = 'country-card';
                 card.innerHTML = `
@@ -400,6 +406,7 @@
                 `;
                 countriesGrid.appendChild(card);
                 
+                // Create Keyword Dropdown if data exists
                 const countryKeywords = keywordsData[country.name] || [];
                 if (countryKeywords.length > 0) {
                      const details = document.createElement('details');
@@ -418,10 +425,12 @@
                     details.appendChild(list);
                     keywordsContainer.appendChild(details);
                 }
+                 // Prepare data for the chart (even if keywords are empty, to keep lists consistent)
                  chartLabels.push(country.name);
                  chartData.push(countryKeywords.length);
             });
             
+            // --- Event Listeners for Expand/Collapse All ---
             const expandBtn = document.getElementById('expand-all');
             const collapseBtn = document.getElementById('collapse-all');
             const allDetails = document.querySelectorAll('.keywords-container details');
@@ -434,6 +443,7 @@
                 allDetails.forEach(detail => detail.open = false);
             });
             
+            // Generate Chart
             const ctx = document.getElementById('keywordsChart').getContext('2d');
             const keywordsChart = new Chart(ctx, {
                 type: 'bar',
