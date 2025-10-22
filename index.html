@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paid Media Analysis - XM</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@700&family=Figtree:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- Branding & Colors --- */
+        :root {
+            --text-color: #24282A;
+            --header-color: #231372;
+            --highlight-color: #20E2C8;
+            --button-color: #20E2C8;
+            --chart-color-1: #231372;
+            --chart-color-2: #20E2C8;
+            --chart-color-3: #6106AF;
+            --background-light: #f8f9fa;
+        }
+
+        /* --- General Styles --- */
+        body {
+            font-family: 'Figtree', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            background-color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2em;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: #ffffff;
+            padding: 1.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        header svg {
+            height: 70px;
+            width: auto;
+        }
+        
+        /* --- Typography --- */
+        h1, h2 {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--header-color);
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1em;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            height: 5px;
+            width: 50%;
+            background-color: var(--highlight-color);
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 4em 0;
+            text-align: center;
+        }
+        
+        section:nth-child(odd) {
+            background-color: var(--background-light);
+        }
+
+        /* --- Country Cards --- */
+        .countries-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5em;
+            justify-content: center;
+            margin-top: 2em;
+        }
+
+        .country-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .country-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .country-card img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .country-card span {
+            font-weight: 500;
+        }
+        
+        /* --- Ads --- */
+        .ads-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 2em;
+        }
+        
+        /* --- Keywords Dropdown --- */
+        .keywords-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5em;
+            text-align: left;
+            margin-top: 2em;
+        }
+
+        details {
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        summary {
+            font-weight: 500;
+            padding: 1em;
+            cursor: pointer;
+            list-style: none;
+            position: relative;
+            color: var(--header-color);
+        }
+        
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        summary::after {
+            content: '+';
+            position: absolute;
+            right: 1em;
+            font-size: 1.2em;
+            color: var(--highlight-color);
+            transition: transform 0.2s;
+        }
+        
+        details[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        .keywords-list {
+            padding: 0 1.5em 1.5em 1.5em;
+            max-height: 200px;
+            overflow-y: auto;
+            list-style-type: none;
+            border-top: 1px solid #eee;
+        }
+        
+        .keywords-list li {
+            padding: 0.5em 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        /* --- Chart --- */
+        .chart-container {
+            max-width: 900px;
+            margin: 2em auto;
+            background: #fff;
+            padding: 2em;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 837.7 245.66">
+          <defs>
+            <style>
+              .cls-1 { fill: none; }
+              .cls-2 { clip-path: url(#clippath-1); }
+              .cls-3 { fill: url(#Gradiente_sem_nome_10); }
+              .cls-4 { fill: #24282a; }
+              .cls-5 { clip-path: url(#clippath); }
+            </style>
+            <clipPath id="clippath">
+              <rect class="cls-1" x="546.28" y="39.03" width="110.43" height="113"/>
+            </clipPath>
+            <clipPath id="clippath-1">
+              <rect class="cls-1" width="240.06" height="245.66"/>
+            </clipPath>
+            <linearGradient id="Gradiente_sem_nome_10" data-name="Gradiente sem nome 10" x1="5622.93" y1="5321.6" x2="5624.11" y2="5322.12" gradientTransform="translate(-1349792.92 1307463.94) scale(240.05 -245.66)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#1b1f59"/>
+              <stop offset="1" stop-color="#0fc"/>
+            </linearGradient>
+          </defs>
+          <g id="Camada_1" data-name="Camada 1">
+            <g id="Grupo_149" data-name="Grupo 149">
+              <g id="Grupo_42-2" data-name="Grupo 42-2">
+                <path id="Caminho_389-2" data-name="Caminho 389-2" class="cls-4" d="M452.05,129.69v18.74c0,1.99-1.61,3.6-3.6,3.6h-67.98c-1.99,0-3.6-1.61-3.6-3.6h0V42.63c0-1.99,1.61-3.6,3.6-3.6h20.9c1.99,0,3.6,1.61,3.6,3.6h0v83.46h43.47c1.99,0,3.6,1.61,3.61,3.59h0Z"/>
+                <path id="Caminho_392-2" data-name="Caminho 392-2" class="cls-4" d="M821.22,116.37l-2.89-5.46c17.91-12.4,22.38-36.97,9.99-54.88-7.37-10.65-19.49-17-32.44-17h-41.65c-1.99,0-3.6,1.61-3.6,3.6v105.8c0,1.99,1.61,3.6,3.6,3.6h20.81c2.04,0,3.7-1.66,3.7-3.7v-30.56c0-.77.63-1.4,1.4-1.4h8.8c.52,0,1,.29,1.24.75l.23.43,17.21,32.51c.64,1.22,1.91,1.98,3.29,1.98h23.18c2,0,3.62-1.63,3.62-3.63,0-.59-.15-1.17-.42-1.69l-16.06-30.34ZM805.1,85.93c-2.59,4.22-7.18,6.79-12.13,6.78h-14.24v-28.46h14.9v.02c7.86.37,13.93,7.03,13.56,14.89-.11,2.4-.83,4.73-2.09,6.78h0Z"/>
+                <path id="Caminho_390-2" data-name="Caminho 390-2" class="cls-4" d="M370.4,140.66c.53.99.24,2.22-.67,2.87-26.46,18.91-63.23,12.79-82.14-13.66-18.91-26.46-12.79-63.23,13.66-82.14,20.48-14.64,47.99-14.64,68.47,0,.91.66,1.19,1.88.67,2.88l-10.45,19.73c-.93,1.76-3.11,2.42-4.87,1.49-.2-.1-.38-.23-.55-.36-13.36-10.51-32.71-8.21-43.22,5.15-10.51,13.36-8.21,32.71,5.15,43.22,11.17,8.79,26.91,8.79,38.08,0,1.55-1.24,3.82-.99,5.06.57.14.17.26.36.37.56l10.44,19.73Z"/>
+                <path id="Caminho_388-2" data-name="Caminho 388-2" class="cls-4" d="M487.03,64.97v18.73h37.96c1.99,0,3.6,1.61,3.6,3.6v16.46c0,1.99-1.61,3.6-3.6,3.6h-37.96v18.73h49.15c1.99,0,3.6,1.61,3.6,3.6v18.74c0,1.99-1.61,3.6-3.6,3.6h-73.66c-1.99,0-3.6-1.61-3.6-3.6V42.63c0-1.99,1.61-3.6,3.6-3.6h73.66c1.99,0,3.6,1.61,3.6,3.6v18.65c0,2.04-1.65,3.69-3.69,3.69h-49.06Z"/>
+                <path id="Caminho_391-2" data-name="Caminho 391-2" class="cls-4" d="M691.37,64.97v18.73h37.96c1.99,0,3.6,1.61,3.6,3.6v16.46c0,1.99-1.61,3.6-3.6,3.6h-37.96v18.73h49.15c1.99,0,3.6,1.61,3.6,3.6v18.74c0,1.99-1.61,3.6-3.6,3.6h-73.66c-1.99,0-3.6-1.61-3.6-3.6V42.63c0-1.99,1.61-3.6,3.6-3.6h73.66c1.99,0,3.6,1.61,3.6,3.6v18.65c0,2.04-1.65,3.69-3.69,3.69h-49.06Z"/>
+                <g id="Grupo_29-2" data-name="Grupo 29-2">
+                  <g class="cls-5">
+                    <g id="Grupo_4-3" data-name="Grupo 4-3">
+                      <path id="Caminho_204-3" data-name="Caminho 204-3" class="cls-4" d="M656.55,42.1l-42.22,107.61c-.55,1.4-1.9,2.32-3.41,2.32h-18.86c-1.51,0-2.86-.92-3.41-2.32l-42.22-107.61c-.45-1.15.11-2.46,1.27-2.91.26-.1.54-.16.82-.16h24.31c1.54,0,2.92.96,3.45,2.41l25.21,69.57,15.99-44.09c.27-.74-.12-1.55-.85-1.82-.15-.06-.32-.08-.48-.08h-15.82c-1.24,0-2.25-1-2.25-2.25,0-.26.05-.52.13-.77l7.45-20.56c.53-1.45,1.9-2.41,3.44-2.41h45.35c1.24,0,2.25,1.01,2.25,2.25,0,.28-.05.56-.16.82"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g id="Grupo_43-2" data-name="Grupo 43-2">
+                <path id="Caminho_393-2" data-name="Caminho 393-2" class="cls-4" d="M310.46,207.36c0,.24-.09.46-.27.62-.22.17-.5.26-.77.24h-6.76c-.33,0-.66-.11-.92-.32-.28-.21-.49-.5-.61-.82l-1.57-4.57h-12.07l-1.55,4.55c-.09.33-.29.62-.57.82-.28.21-.62.33-.98.32h-6.74c-.28.02-.55-.06-.77-.23-.18-.16-.29-.39-.27-.63,0-.19.05-.37.12-.55l12.72-32.27c.14-.34.38-.64.68-.86.27-.2.6-.31.94-.31h5.02c.34,0,.67.12.94.32.29.21.51.51.63.85l12.69,32.29c.07.17.11.36.12.55M297.1,195.31l-3.6-10.55-3.6,10.55h7.2Z"/>
+                <path id="Caminho_394-2" data-name="Caminho 394-2" class="cls-4" d="M338.14,174.64c0-.34.13-.66.37-.89.23-.24.56-.38.89-.37h10.81c3.16-.05,6.28.71,9.06,2.23,2.61,1.44,4.77,3.58,6.23,6.19,1.52,2.76,2.29,5.86,2.24,9.01.05,3.14-.72,6.23-2.24,8.98-1.46,2.6-3.61,4.74-6.23,6.17-2.78,1.51-5.9,2.27-9.06,2.21h-10.81c-.7,0-1.26-.56-1.26-1.26h0v-32.27ZM350.21,199.97c3.23.04,6.21-1.71,7.74-4.55.77-1.42,1.16-3.01,1.14-4.62.02-1.66-.37-3.3-1.14-4.76-1.5-2.87-4.5-4.65-7.74-4.59l-3.43.02v18.5h3.43Z"/>
+                <path id="Caminho_395-2" data-name="Caminho 395-2" class="cls-4" d="M425.13,173.56c.18.15.28.38.26.62,0,.2-.04.39-.12.57l-12.72,32.27c-.13.35-.36.65-.65.87-.27.21-.6.32-.94.32h-5.02c-.35,0-.68-.12-.95-.33-.29-.21-.52-.5-.64-.83l-12.67-32.29c-.07-.17-.11-.36-.12-.55,0-.23.09-.46.26-.61.22-.16.49-.25.76-.23h6.76c.34,0,.67.11.94.32.28.21.48.51.58.85l7.55,21,7.67-21.05c.1-.34.31-.63.6-.83.27-.2.59-.31.93-.31h6.76c.27-.02.54.06.76.21"/>
+                <path id="Caminho_396-2" data-name="Caminho 396-2" class="cls-4" d="M452.9,174.64c-.02-.34.1-.68.33-.93.25-.23.59-.35.93-.33h22.4c.34-.02.68.1.93.33.23.25.35.59.33.93v5.48c.02.34-.1.67-.32.93-.25.24-.59.36-.94.33h-15.12v5.76h11.48c.37-.02.73.1,1.01.35.26.25.39.61.37.97v4.53c.02.35-.12.69-.37.93-.28.24-.64.36-1.01.33h-11.48v5.93h15.12c.47-.03.92.13,1.27.44.32.31.49.74.46,1.18v5.14c.02.34-.11.66-.35.9-.26.23-.6.35-.94.33h-22.85c-.34.02-.67-.09-.93-.32-.23-.25-.36-.58-.33-.92v-32.29Z"/>
+                <path id="Caminho_397-2" data-name="Caminho 397-2" class="cls-4" d="M534.29,207.26c0,.51-.4.92-.9.93-.02,0-.03,0-.05,0h-7.12c-.29.02-.58-.06-.82-.23-.27-.24-.48-.52-.63-.85l-5.1-9.81h-3.55v9.62c.02.34-.11.68-.35.93-.26.23-.61.35-.96.33h-6.1c-.34.02-.67-.1-.92-.33-.23-.25-.34-.59-.32-.93v-32.29c-.01-.34.11-.66.35-.9.23-.24.56-.37.89-.36h12.22c2.26-.04,4.49.47,6.5,1.49,1.85.95,3.38,2.42,4.42,4.23,1.09,1.94,1.64,4.14,1.59,6.36.03,2.04-.46,4.06-1.42,5.86-.92,1.71-2.29,3.13-3.96,4.12l6.1,11.31c.1.16.14.34.14.52M516.12,189.85h4.45c.77.01,1.52-.2,2.18-.6.64-.39,1.16-.95,1.51-1.62.37-.69.56-1.46.55-2.24.01-.76-.18-1.51-.55-2.18-.35-.63-.88-1.15-1.51-1.5-.67-.36-1.42-.55-2.18-.53h-4.45v8.67Z"/>
+                <path id="Caminho_398-2" data-name="Caminho 398-2" class="cls-4" d="M561.13,174.64c-.02-.34.1-.68.33-.93.25-.23.59-.35.93-.33h23.24c.34-.02.68.1.93.33.23.25.35.59.33.93v5.74c.02.35-.1.68-.33.94-.25.24-.58.37-.93.35h-7.31v25.55c.02.35-.1.69-.33.94-.26.23-.6.35-.95.32h-6.1c-.64.06-1.2-.4-1.26-1.04,0-.07,0-.15,0-.22v-25.55h-7.29c-.34.02-.68-.1-.93-.35-.23-.26-.35-.6-.33-.94v-5.74Z"/>
+                <path id="Caminho_399-2" data-name="Caminho 399-2" class="cls-4" d="M623.9,207.24c.07.44-.23.86-.68.93-.07.01-.15.01-.22,0h-6.79c-.46.06-.87-.27-.93-.73,0-.07,0-.14,0-.2v-32.94c-.06-.44.26-.85.7-.9.07,0,.15,0,.22,0h6.79c.44-.06.84.25.9.69,0,.07,0,.14,0,.21v32.94Z"/>
+                <path id="Caminho_400-2" data-name="Caminho 400-2" class="cls-4" d="M652.91,204.31c.01-.3.1-.6.26-.86l2.81-5.05c.2-.41.62-.67,1.07-.67.27.01.54.08.79.19,1.47.68,2.99,1.24,4.55,1.68,1.51.41,3.06.61,4.62.61,1.06.03,2.12-.21,3.06-.7.75-.34,1.24-1.07,1.25-1.89,0-.58-.25-1.13-.7-1.5-.6-.49-1.27-.86-2-1.12-.87-.33-2.09-.73-3.66-1.19-2.07-.58-4.08-1.36-6-2.34-1.43-.74-2.65-1.83-3.54-3.18-.87-1.47-1.29-3.15-1.22-4.86-.05-2.05.57-4.07,1.76-5.74,1.2-1.62,2.82-2.88,4.69-3.63,2.01-.83,4.17-1.25,6.35-1.23,1.47,0,2.94.17,4.37.5,1.37.3,2.71.73,4.01,1.26,1.03.42,2.02.93,2.95,1.52.41.21.68.62.71,1.07-.03.32-.13.63-.31.9l-2.83,5.14c-.17.38-.56.62-.98.62-.37-.02-.73-.13-1.05-.31-1.18-.62-2.41-1.14-3.68-1.56-1.23-.37-2.51-.55-3.8-.54-.91-.02-1.81.2-2.6.64-.64.29-1.07.92-1.1,1.62,0,.7.47,1.3,1.41,1.8,1.45.69,2.97,1.25,4.53,1.65,2.14.6,4.22,1.37,6.24,2.3,1.52.71,2.84,1.79,3.83,3.14,1.03,1.52,1.53,3.33,1.45,5.16.04,2.1-.58,4.15-1.79,5.87-1.23,1.71-2.91,3.04-4.86,3.85-2.15.91-4.46,1.36-6.79,1.33-2.35,0-4.68-.31-6.95-.9-2.2-.56-4.31-1.43-6.26-2.6-.38-.19-.61-.58-.62-1"/>
+                <path id="Caminho_401-2" data-name="Caminho 401-2" class="cls-4" d="M717.37,207.24c.07.44-.23.86-.68.93-.08.01-.15.01-.23,0h-6.79c-.46.06-.87-.27-.93-.73,0-.07,0-.14,0-.2v-32.94c-.06-.44.26-.85.7-.9.07,0,.15,0,.22,0h6.79c.44-.06.84.24.9.68.01.07.01.15,0,.22v32.94Z"/>
+                <path id="Caminho_402-2" data-name="Caminho 402-2" class="cls-4" d="M778.6,173.61c.17.19.26.44.24.69v32.96c.02.26-.07.51-.25.69-.19.17-.43.25-.68.24h-6.48c-.75,0-1.45-.41-1.81-1.07l-13.38-20.36v20.5c.02.25-.07.51-.25.69-.19.17-.43.25-.68.24h-6.79c-.25.01-.49-.07-.68-.24-.18-.18-.27-.44-.25-.69v-32.95c-.02-.25.07-.51.25-.69.19-.17.43-.25.68-.24h7.03c.75.04,1.42.46,1.79,1.12l12.88,19.15v-19.34c-.02-.25.07-.5.24-.69.18-.17.42-.25.67-.24h6.79c.25-.02.5.07.69.24"/>
+                <path id="Caminho_403-2" data-name="Caminho 403-2" class="cls-4" d="M827.49,200.03c.61-.16,1.2-.37,1.76-.66v-6.14c-.01-.34.12-.67.37-.91.24-.23.56-.36.89-.36h5.98c.32,0,.64.13.86.37.23.24.36.56.36.89v11.36c0,.26-.07.51-.19.74-.1.23-.27.42-.48.55-1.63.97-3.4,1.7-5.25,2.14-1.96.55-3.98.85-6.01.88-3.24.03-6.43-.79-9.24-2.4-2.75-1.56-5.04-3.82-6.63-6.55-1.63-2.77-2.47-5.93-2.44-9.15-.04-6.48,3.42-12.47,9.05-15.67,2.81-1.61,6-2.44,9.24-2.41,1.91.02,3.81.34,5.62.94,1.76.51,3.41,1.35,4.86,2.47.33.23.53.62.52,1.02,0,.24-.07.47-.22.67l-3.5,5.26c-.19.32-.53.51-.91.5-.3,0-.59-.1-.81-.31-.78-.65-1.68-1.13-2.64-1.44-.93-.33-1.92-.5-2.91-.51-1.71-.02-3.39.42-4.88,1.26-1.45.82-2.66,2-3.5,3.44-1.71,2.96-1.71,6.61,0,9.57.84,1.44,2.05,2.62,3.5,3.44,1.49.84,3.17,1.28,4.88,1.26.58-.02,1.16-.11,1.72-.27"/>
+              </g>
+              <g id="Grupo_41-2" data-name="Grupo 41-2">
+                <g class="cls-2">
+                  <g id="Grupo_4-4" data-name="Grupo 4-4">
+                    <path id="Caminho_204-4" data-name="Caminho 204-4" class="cls-3" d="M239.71,6.67l-91.78,233.94c-1.2,3.05-4.14,5.05-7.41,5.05h-41c-3.27,0-6.21-2.01-7.41-5.05L.34,6.67C-.64,4.16.59,1.32,3.1.34,3.67.11,4.28,0,4.89,0h52.84c3.35,0,6.34,2.1,7.48,5.25l54.82,151.23,34.75-95.85c.58-1.6-.25-3.37-1.85-3.95-.34-.12-.69-.19-1.05-.18h-34.39c-2.7,0-4.88-2.19-4.88-4.88,0-.57.1-1.13.29-1.66l16.2-44.7c1.14-3.15,4.13-5.25,7.49-5.25h98.59c2.7,0,4.88,2.19,4.88,4.88,0,.61-.11,1.22-.34,1.78"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+    </header>
+
+    <main>
+        <section id="global-presence">
+            <div class="container">
+                <h2>Global Presence in Google Ads</h2>
+                <p>XM is actively investing in Google Ads across a variety of global markets. Below are the countries where a presence has been detected.</p>
+                <div class="countries-grid">
+                    </div>
+            </div>
+        </section>
+
+        <section id="ads-examples">
+            <div class="container">
+                <h2>Ad Examples</h2>
+                <p>We analyzed some of the ads used in XM's Google Ads campaigns.</p>
+                <img src="https://i.imgur.com/k6uYqC3.jpeg" alt="Examples of XM ads" class="ads-image">
+            </div>
+        </section>
+
+        <section id="keywords">
+            <div class="container">
+                <h2>Keywords by Country</h2>
+                <p>Explore the keywords XM is bidding on in each identified market, according to SpyFu.</p>
+                <div class="keywords-container">
+                     </div>
+            </div>
+        </section>
+
+        <section id="keyword-chart">
+            <div class="container">
+                <h2>Quantitative Keyword Analysis</h2>
+                <p>The bar chart below illustrates the volume of unique keywords bid on per country, offering a comparative view of the investment intensity in each market.</p>
+                <div class="chart-container">
+                    <canvas id="keywordsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="meta-ads">
+            <div class="container">
+                <h2>Presence on Meta Ads</h2>
+                <p style="font-size: 1.2em;">According to our analysis, XM <strong>is not present in any country</strong> with Meta Ads (Facebook, Instagram) campaigns.</p>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const countriesData = [
+                { name: 'Portugal', code: 'PT' }, { name: 'Thailand', code: 'TH' }, { name: 'Malaysia', code: 'MY' },
+                { name: 'South Africa', code: 'ZA' }, { name: 'Philippines', code: 'PH' }, { name: 'Nigeria', code: 'NG' },
+                { name: 'Egypt', code: 'EG' }, { name: 'Vietnam', code: 'VN' }, { name: 'Brazil', code: 'BR' },
+                { name: 'Mexico', code: 'MX' }, { name: 'Indonesia', code: 'ID' }, { name: 'USA', code: 'US' },
+                { name: 'Israel', code: 'IL' }, { name: 'Italy', code: 'IT' }, { name: 'Spain', code: 'ES' },
+                { name: 'Colombia', code: 'CO' }, { name: 'UK', code: 'GB' }, { name: 'Germany', code: 'DE' },
+                { name: 'Argentina', code: 'AR' }, { name: 'Austria', code: 'AT' }, { name: 'Australia', code: 'AU' },
+                { name: 'Canada', code: 'CA' }, { name: 'Chile', code: 'CL' }
+            ];
+
+            const keywordsData = {
+                'Portugal': ['mt5 download', 'trading platforms', 'xm corretora', 'download metatrader 4', 'xm trading', 'metatrader 5 mac', 'forexmarket', 'forexsignals', 'xm fx', 'xm stocks', 'forex demo account', 'xm broker', 'metatrader5 download', 'trading fx', 'trading xm', 'xm brokers', 'forex bonus no deposit', 'xm stock'],
+                'Thailand': [], 
+                'Malaysia': [], 
+                'South Africa': [], 
+                'Philippines': ['xm', 'xm login', 'xm global', 'xm trading', 'xm mt4 download', 'xm broker', 'xm mt5', 'xm forex', 'xm member login', 'mt4 platform', 'deposit bonus forex', 'xm app download', 'buy amazon shares', 'xm traders', 'xm register', 'trade stocks online', 'mt4 xm download', 'xm.com login', 'best stock trading app for beginners', 'forex deposit bonus', 'how to buy amazon shares', 'xm forex broker', 'how to buy shares in amazon', 'xm brokers', 'login xm', 'delta airlines stock price', 'brilliant reversal indicator mt5', 'learnforex', 'brokers that trade nasdaq', 'forex trading platform south africa', 'forex no deposit bonus new', 'fx giants no deposit bonus', 'how to trade nasdaq on mt4', 'xmglobal demo', 'forex broker xm', 'best time to trade nasdaq', 'forex broker killer instagram', 'share trading platforms south africa', 'xm sign up bonus', 'xm global register', 'sign up for xm', 'xm reg', 'cheapest share trading platform south africa', 's&p500 news', 'tradingforex', 'xm com login', 'buying tesla shares', 'xmtrading login', 'trading stocks online', 'trading stocks app', 'how to invest in amazon', 'xm app', 'xm global demo', 'new forex no deposit bonus', 'xm global registration', 'trading forex for dummies', 'xm metatrader download', 'xm com', 'cheapest forex brokers', 'register xm', 'xm mt5 webtrader', 'trading platforms list', 'metatrader 4 download mac', 'xm webtrader mt5', 'xm partnership login', 'market online trading', 'broker for metatrader 5', 'metatrader xm', 'forex 101', 'xm sign up', 'trading xm', 'octa forex', 'xm broker minimum deposit', 'xm trading login', 'metatrader 5 xm', 'tesla shares buy', 'xm account', 'xm broker login', 'xmglobal', 'xm members area', 'xm trader', 'trading money', 'xm brokers login', 's&p chart', 'metatrader 5 broker', 'xm demo competition'],
+                'Nigeria': [],
+                'Egypt': [],
+                'Vietnam': [],
+                'Brazil': ['gold11', 'xm login', 'xm global', 'superforex', 'master traders', 'x m', 'petróleo brent investing', 'beefund pro', 'xm global login', 'investing brent', 'xm partner', 'meta 5', 'fx xm', 'forex compounding calculator', 'xmglobal'],
+                'Mexico': ['xm', 'metatrader 4', 'forex trading', 'xm broker', 'comprar bitcoins', 'forex mexico', 'xm bono 30', 'meta trader 4', 'binance exchange', 'mt4 para pc', 'xm global', 'xm login', 'best crypto to invest', 'plataformas para invertir en méxico', 'paginas para invertir en acciones', 'trading plataforma', 'cuenta demo xm', 'crypto trade', 'xm iniciar sesion', 'broker xm', 'xm usuarios', 'forex méxico', 'forex demo', 'hacer trading', 'descargar mt4', 'páginas para invertir en acciones', 'bróker en mexico', 'crear cuenta metatrader 4', 'broker regulados en mexico', 'bitcointradingview', 'trading forex bonus no deposit', 'xm log', 'trading forex no deposit bonus', 'cryoto com exchange', 'mejor broker mexico', 'inversiones en empresas', 'trade xm', 'brokers xm', 'forex bono sin deposito', 'broker mx', 'broker bono sin deposito', 'trading cryptos', 'que es xm', 'partners xm', 'xm área de usuarios', 'amc stock after hours', 'xm webtrader', 'partner xm', 'xmglobal-mt5', 'exchanges criptomonedas', 'broker que dan bono sin deposito', 'trader demo', 'best crypto invest', 'xm iniciar sesión', 'metatrader 5 web', 'forex trading malaysia', 'mejores aplicaciones para invertir', 'x-trading', 'xm area de usuarios', 'páginas de inversión', 'trading online platform', 'buybitcoin', 'mt4 trading', 'germany 30 index', 'login xm', 'trading crypto', 'netflix stock nyse', 'best crypto investors', 'brokers en méxico', 'xm brokerage', 'bono forex sin deposito', 'crypto investing', 'mt4 trader', 'cómo operar en forex', 'exchanges crypto', 'bitcoins trading', 's&p500 index', 'us 500 index', 'xm trading login', 'trading xm', 'dow jones today live', 'mejor plataforma para invertir', 'best crypto to invest 2022', 's&p 500 stock', 'broker regulados', 'copy traders', 'trader ninja', 'crypto investments', 'xm trader', 'trading criptomonedas', 'metatrader 4 xm', 'walmart investing', 'netflix stock price nasdaq', 'ripple investing', 'trade crypto', 'how to buy bitcoins', 'metatrader 5 for pc', 'nikkei 225 index', 'forex calculator compound', 'trading brokers', 'trader xm', 'xm xm', 'forex trading platforms', 'xm platform', 'forex demo account', 'traders online', 'dow jones industrials', 'online trading'],
+                'Indonesia': ['fx signal', 'gold rate usa today', 'web trading application', 'online trader academy', 'stock buying account', 'unlimited stock trading', 'stock trading prediction software', 'dow jones stock search', 'how to buy amazon shares in us', 'how to start a stocks account', 'virtual stock trading app iphone', 'xm trading signals', 'gold price usa today', 'best demo stock trading app', 'xm mt5 web', 'xm platforms'],
+                'USA': [],
+                'Israel': ['xm', 'robot trading automatico gratis', 'globex', 'metatrader4 download', 'best trading platform europe', 'metatrader 4 download italiano gratis', 'xm bologna', 'forex italia', 'trading conto demo', 'mt4 download for pc', 'mt4 chart setup', 'xm platforms', 'xm account', 'xm global mt5', 'trade republic azione gratis', 'trade com accedi', 'brokers xm', 'come iniziare a fare trading online', 'trading sugli indici', 'app mt4', 'trade forex demo', 'cfd azioni', 'investire in indici', 'metal trader 4', 'best broker of forex', 'migliori broker trading online', 'trade xm', 'imparare il trading', 'partner xm', 'traning online', 'piattaforme trading automatico', 'partners xm', 'prezzo petrolio real time', 'online trade academy', 'metatrader 5 demo', 'metatrader 4 download windows', 'trader 4', 'xm mt4', 'segnali forex', 'prop trading companies', 'broker forex best', 'metatrader 4 for pc', 'broker metatrader 5', 'ecn brokers', 'xm broker login', 'xm demo account', 'trading online platform', 'xm calculator', 'mt5 download', 'xm fx', 'fx signal', 'download mt4 for pc', 'trading platforms', 'mt4 download pc', 'best trade platform', 'how to trade online', 'currency trading', 'trading xm', 'trading x', 'xm forex trading', 'download metatrader 5', 'mt4 xm download', 'meta trader 5', 'xmglobal', 'mt5 templates download free', 'metatrader 4 o 5', 'metatrader 5 download', 'xm global login', 'xm global limited', 'xm trading', 'xm login', 'xm affiliate', 'broker xm', 'nabil forex', 'trade leverage', 'mt4 trader', 'metatrader 5', 'metatrader 5 broker', 'simulazione trading online senza registrazione', 'best broker', 'xm standard account', 'protrader', 'futures trading', 'best investments', 'broker forex', 'trader xm', 'trading', 'xm partner', 'xm partners', 'bonus no deposit forex', 'xm forex'],
+                'Italy': ['meta trader 4', 'metatrader4', 'meta trader 5', 'metatrader mac', 'xm broker opiniones', 'mt4 web', 'broker metatrader 4', 'invest forex', 'operar en forex', 'broker forex españa', 'what is forex trading', 'metatrader 4 windows 10', 'metatrader 4 que es', 'que forex', 'xm broker review', 'xm opiniones', 'mejor plataforma de trading', 'brokers xm', 'brokers metatrader 4', 'forex no deposit bonus', 'brokers demo', 'broker fx', 'meta trader 5 download', 'descarga metatrader 4', 'brokers with metatrader 4', 'mt4 account', 'xm 3', 'como operar en metatrader 5', 'xm traders', 'login xm', 'mt4 que es', 'invertir con cfd', 'cuenta demo broker', 'forex brokers with zero spread', 'descargar meta 4', 'apalancamiento forex que es', 'mt4 apk', 'descargar metatrader 4 para mac', 'trading 4', 'metaquotes software corp', 'how to start forex trading from home', 'forex broker no spread', 'best trading platform for e mini futures', 'how to use forex signals', 'tradingforex', 'invest forex', 'live signals', 'mt4 leverage', 'the best broker for forex', 'fta forex', 'how to start forex trading without investment', 'danny\'s team forex', 'funding forex account with credit card', 'cfd trading forums', 'is forex trading worth it?', 'rolls-royce trade', 'forex account', 'where to trade forex online', 'metatrader 5 online', 'xm metatrader'],
+                'Spain': ['xm', 'xm global', 'city fx broker', 'forex scalping signals', 'xm login', 'forex funded account uk', 'us30 mt4', 'xm group', 'xm markets', 'download meta trader 4', 'best broker for metatrader 4 uk', 'metatrader 4 reddit', 'globalfx', 'xm demo account', 'forex spread comparison', 'xmtrading', 'forex crypto', 'metatrader 4 free download', 'forex what to trade today', 'start forex', 'chart analysis forex', 'uk gold price chart', 'fca regulated brokers list', 'xm uk', 'best free forex signal provider', 'forex signals free', 'binarycent demo', 'halal forex brokers', 'forex spreads comparison', 'reddit forex signals', 'fxsignal', 'best demo stock trading account', 'wwa forex', 'best broker for forex uk', 'mt5 account', 'free forex signals online with real time', 'download mt4 for pc', 'mt4 trading bot', 'forex.com app', 'python forex trading', 'videforex demo account', 'xm global mt4', 'xmglobal', 'forex', 'metatrader 4 xm', 'metatrader 5 online', 'xm metatrader', 'metatrader 5 automated trading', 'paper stocks trading', 'how to become a forex trader', 'expert advisor mt4 free download', 'best broker for scalping forex', 'mt4 leverage', 'micro account forex trading', 'free forex signals uk', 'buy stock in ford', 'motto fx trading', 'lowest spread broker uk', 'best trading broker for beginners uk', 'online trading vergleich', 'how to trade', 'metatrader erfahrung', 'in welche währung investieren 2021', 'geldanlage öl', 'rohöl handeln', 'xm broker erfahrungen', 'öl cfd kaufen', 'ar e commerce trading', 'auf öl spekulieren', 'rohstoff aktien kaufen', 'fake forex brokers list in nigeria', 'mt4 download chip', 'sistem trading forex', 'panthera trade mt4', 'xm-raster', 'mr bet promo code ohne einzahlung 2021', 'freshforex 2021 bonus', 'xm de', 'öl indizes', 'aktienkauf deutsche bank', 'aktien kaufen ing', 'e trading frontiers', 'xm investment', 'live trading forex signals', 'xm global mt5', 'index zertifikat öl open end', 'www xmtrading', 'senarai broker forex yang sah di malaysia', 'just forex mt4', 'xm erfahrung', 'lohnt es sich basf-aktien zu kaufen', 'trading-portale', 'rohstoffbörse deutschland', 'www goldseiten de', 'goldkauf würzburg', 'brokervergleich 2022', 'move xm', 'xm headquarters', 'trade coins online', 'forex trade bonus', 'forex broker ohne nachschusspflicht', 'forex signal software free download', 'trading software for pc free download', 'metatrader 5 32 bit', 'fx blue trading simulator mt5', 'broker forex spread rendah', 'ölaktien 2022', 'kostenloses trading', 'xm affiliate platform login', 'forex signal trader', 'forex-signale kostenlos', 'cfd öl', 'expert advisor for mt4', 'metatrader 4 download macbook air', 'ölreiches system trading', 'goldhandel heraeus', 'forex broker directory', 'aktien depot deutsche bank', 'one click trading forex', 'xm trading minimum deposit', 'tradeinvest90', 'xm $30 bonus conditions', 'xm withdrawal problems', 'goldmarkt deutschland', 'dollarkonto', 'metatrader 4 for windows download', 'trading signale app', 'metatrader 4 macbook', 'forex thrive', 'metatrader 4 mac download', 'online trading registration', 'halal forex', 'vdax handeln', 'forex broker vergleichen', 'trading signale kaufen', 'proaurum goldbarren', 'metatrader 4 for windows 10', 'connecting binance to metatrader 5', 'aktie kaufen commerzbank', 'silber kaufen in der schweiz', 'trading on mt4', 'trading platform with api', 'aktien kaufen ubs', 'download metatrader 4 windows', 'trading-broker', 'icmarkets webtrader', 'gold kaufen mit paypal', 'forex tr', 'xm cfd', 'metatrader 4 download for mac', 'xm trade app', 'forex low spread broker', 'trade point germany gmbh', 'broker ohne spread', 'rohstoff trading', 'trade xm', 'how long does xm withdrawal take', 'forex market trading time', 'gold münchen kaufen', 'forex live signals free', 'xm withdrawal time', 'trading platform for forex', 'copy trading xm', 'forex no spread', 'trading online game', 'metatrader bot', 'xm app download for pc', 'trading online platforms', 'forex broker germany', 'shigura mt5', 'mt5 xm login', 'brokers with no deposit bonus 2022', 'demo account on forex', 'best forex trade', 'forex software trading', 'meta4 download', 'usd eur fx', 'forex trader deutsch', 'xm 24', 'meta trading 4 download', 'how to trade for free', 'online-handelsplattform', 'xm broker erfahrung', 'signal trading', 'meta trader download', 'mt5trader', 'download metatrader 4 pc', 'forex bots', 'mt5 app', 'forex trading signals live', 'xtrade broker', 'veracity markets mt4', 'managed account forex', 'virtual trading platform', 'meta 5 trader', 'metatrader alternative', 'pivotal point trading', 'download metatrader 4 for windows', 'trader 4', 'trading mt4', 'metatrader 4 software download', 'mt4 trade copier', 'trader mt4', 'forex broker nz', 'forexrobot', 'metatrader 5 geld auszahlen', 'crude oil future', 'trading with pivot points', 'micro lots broker', 'trading forex demo account', 'mt4 markets', 'best forex broker in germany', 'mt4 market', 'chart xau usd', 'trading platforms forex', 'brokerage usa', 'forex money', 'software for automated trading', 'mt4 web', 'mt5 copy trade', '2 xm', 'forex invest', 'metaquotes mt5', 'metatrader 6', 'xm market', 'trading.point gmbh', 'free trading platform uk', 'welche trading plattform', 'metatrader 4 mt4 download', 'metatrader 4 copy trading', 'trading point gmbh', 'high frequency forex trading', 'mate trader 5', 'mt4 expert advisors', 'mt5 trading', 'robinhood trading platform', 'metatrader 4 download for windows', 'forex demo account login', 'broker metatrader 4', 'mt4 download for pc', 'web trader login', 'zero spread broker', 'xm stocks', 'forex bonus', 'online forex', 'forex best signals', 'metatrader for mac', 'meta 4 download', 'traders forex', 'günstigster broker', 'best forex brokers in germany', 'traden demokonto', 'mt4 signals', 'trading xm', 'login xm', 'metatrader web trader', 'forex no deposit', 'how to trade online and make money', 'metatrader4 web', 'forex xm', 'best ecn brokers forex', 'free trading signals', 'mt4 windows', 'xm trade', 'markets forex', 'currency trade', 'meta trading 4', 'website to make money online', 'forexbrokers', 'xm broker bono', 'best forex broker in europe', 'download meta trader 5', 'trading center', 'indicator metatrader 4', 'invest xauusd', 'xm global limited', 'gold preisvergleich de', 'xmglobal', 'meta 5', 'mt4', 'welche broker sind seriös', 'devisenhandel für anfänger', 'trading signals free', 'xm.com login', 'onlinetrader', 'metatrader demokonto', 'metatrader website', 'trader xm', 'goldkauf deutschland', 'best forex broker europe', 'brokerage account', 'metatrader 4 iphone', 'no deposit forex bonus', 'insta forex', 'trading test', 'bonus without deposit', 'metatrader 4 software', 'forex ecn broker', 'pivot points trading', 'trading in forex online', 'x trades', 'xtrade brokers', 'forex trading platforms', 'brokerage trading', 'mt4 xm', 'my forex', 'xm global login', 'mt4 expert advisor'],
+                'Colombia': ['daytrading', 'mt5 forex', 'metatrader 5', 'metatrader 4 download', 'meta trader', 'mt5', 'forex master pattern', 'metatrader 5 pc', 'metatrader4 download', 'metatrader5', 'xm forex', 'xmtrading', 'metatrader 4 free download', 'xm forex', 'broker xm', 'mt 5', 'm t4', 'metatrader 5 mac', 'xm trading', 'mt5 set', 'metatrader binance', 'mt5 indikatoren', 'xm mt4', 'xauusd chart', 'gold ankauf neuss', 'metatrader erfahrungen', 'metatrader 4 download deutsch kostenlos', 'metatrader 4 kostenlos', 'order block indicator mt5 free download', 'metatrader 5 kostenlos', 'währungspaare handeln', 'concept xm', '24xforex', 'meta trader 5 download', 'metatrader 4 for pc', 'metatrader 5 download mac', 'metatrader for linux', 'fx forex', 'investing in gold', 'cfd oil', 'day trader platform', 'metatrader web', 'deutsche bank trading', 'forex account', 'online trading vergleich', 'metatrader erfahrung', 'öl wti handeln', 'rohstoff handeln', 'xm broker erfahrungen', 'auf öl spekulieren', 'rohstoff aktien kaufen', 'cotps trading', 'forex trading with signals', 'mt4 codebase', 'xm mt4 download for laptop', 'metatrader 4 exe download', 'practical forex trading', 'forex4 you', 'mt4 5', 'mt4 brokers with stocks', 'metatrader 4 setup', 'low spread forex brokers scalping', 'broker to broker transfer', 'forex broker comparison spread', 'mt4 download free', 'alert trading', 'best forex free signals', 'xm mt5 login', 'webtrader online', 'cxm forex', 'best mt4 expert advisors', 'forex legal', 'auto trader platform', 'world wide brokers', 'how to begin trading forex', 'xm forex leverage', 'intelligence prime capital mt4', 'forex brokers with lowest spreads', 'forex trading manager', 'forex broker with high leverage', 'international trade platform', 'ecn brokers in usa', 'forex broker listing', 'forex signal best', 'platform forex', 'metatrader 4 download for mac', 'live trading platforms', 'course for forex trading', 'shares trading online', 'worldwide forex', 'trade portals', 'us ecn forex brokers', 'metatrader4 login', 'investing in indexes', 'web trader platform', 'live trade signals', 'trading gold australia', 'trading commodities australia', 'trading currency forex', 'commodity trading in australia', 'forex trader uk', 'australia gold trading', 'swap in forex trading', 'trade online australia', 'best brokers of forex', 'forex trade course online', 'wall street forex', 'best invest platform', 'fx trading account', 'mt4 charts', 'forex global market', 'the best forex broker', 'forex broker mt4', 'option trading usa', 'index trader', 'forextrader', 'best brokers uk', 'trading platforms for forex', 'xm metatrader 5', 'audusd technical analysis', 'fx trading signals', 'xm trades', 'currency trader app', 'algorithmic trading platforms', 'best laptop for forex trading', 'best international trading platform', 'uk trading platforms', 'forex demo account metatrader 4', 'australian cfd', 'forex trader platform', 'fx accounts', 'trading currency app', 'day trade simulator', 'high leverage brokers', 'best currency to trade right now', 'forex broker comparisons', 'learning forex trading', 'xm plataforma', 'how to open forex account', 'forex trading usa', 'best forex signal app', 'free forex trade', 'micro account forex', 'world share index', 'coinage trading', 'us ecn brokers', 'usforex', 'commodities trading australia', 'xm trading mt4', 'mt4 download for pc 64 bit', 'autotrade forex', 'stocks xm', 'futures brokers in australia', 'rich forex traders', 'live trading forex', 'autotrading bot', 'fx signals', 'trading 365', 'ctrader vs metatrader 4', 'markets mt4', 'xm m', 'swap-free account forex', 'low spread us forex brokers', 'trades fx option', 'currency market live', 'brokers for mt4', 'xm com login', 'best free forex signals', 'forex signals live', 'xm limassol', 'forex aus', 'mt4 for mac download', 'mt4 stocks', 'indian forex trading', 'best broker for metatrader 4', 'xm trading view', 'forex trading free', 'best mt4 brokers', 'forex metatrader', 'buy gold from dubai online', 'start trading forex', 'share market online', 'ifs markets', 'xm log in', 'best broker for forex trading', 'forex broker metatrader 4', 'daily forex signals', 'point trading australia', 'swap fee forex', 'metatrader 5 for mac', 'metatrader 4 multiterminal', 'metatrader 4 apk download', 'mplusfx', 'lot size in forex', 'indices forex', 'mt4 software', 'best forex brokers in australia', 'forex us brokers', 'forex signal free', 'auto trading platform', 'trading web', 'forex trading forums', 'traderush', 'australian trading', 'robot trading in forex', 'mirror trading platform', 'study trading', 'trading gold on forex', 'online forex', 'metatrader 4 download mac', 'mt4 one click trading', 'forex trading account opening', 'trading system for forex', 'spy trader', 'forex live account', 'trading brokers in australia', 'forex 4 you', 'xm mt4 download', 'trading forex gold', 'xm forex broker', 'fx forex', 'admiral trading', 'binaryoptions', 'forex broker new zealand', 'mt4 api', 'mt4 brokers usa', 'forex mt4 brokers', 'cryptocurrencies how to start', 'mx forex', 'demo trader', 'traders forex', 'forex trading signals free', 'free forex trading', 'trading 4x', 'xm stocks', 'interactive brokers trading platform', 'tradingview platform', 'which trading market is open now', 'best brokers for metatrader 4', 'trade view forex', 'trading online for beginners', 'xm copy trade', 'broker windsor', 'forex invest', 'forex leverage us', 'elite trader', 'forex mt4', 'login xm', 'mt4 chart', 'metatrader brokers', 'forexpr', 'mt5 brokers', 'demo account for trading', 'xm account', 'trading charts free', 'metatrader 4 apk', 'xm trade', 'best brokerage accounts', 'trading xm', 'ea trade', 'demo account xm', 'signal trade', 'crude oil investing', 'forex trade journal template', 'metatrader 4 pc download', 'xm platform', 'forex trading indicators', 'trading signals free', 'multibank fx', 'best currency to invest in', 'forexsignal', 'top 10 forex broker', 'oil etf stock', 'forex trade investment', 'online money earn', 'webtrader mt4', 'forex services', 'forex brokers no deposit bonus', 'high leverage broker', 'financial trading online', 'saxo group', 'forex trading journal template', 'forex live chart', 'forex chart online', 'forex investing', 'fxtrader', 'weekend trading forex', 'mt4 free download', 'what is metatrader 5', 'currency brokers', 'capital forex trading', 'forex trading capital', 'xm metatrader', 'broker for forex trading', 'market forex', 'open a forex trading account', 'free signal forex', 'top 10 forex brokers', 'fx broker', 'metatrader 4 free download', 'forexpros', 'how to buy gold stock'],
+                'UK': ['xm', 'metatrader', 'metatrader 5', 'meta trader 4', 'forex-handel', 'broker forex', 'meta trader 5 download', 'hftrading', 'think or swim', 'no deposit bonus forex', 'meta trader 4', 'download metatrader 4', 'öl profit', 'best trading platform germany', 'chartanalyse tool kostenlos', 'kostenlos traden', 'free forex signals', 'best trading platform europe', 'aktien kaufen ing diba', 'forex broker deutschland', 'cfd broker mit sitz in deutschland', 'goldkauf regensburg', 'future öl', 'metatrader 4 download deutsch kostenlos', 'best brokers in germany', 'forex signale kostenlos', 'metatrader 5 broker deutschland', 'metatrader 4 deutsch', 'metatrader 4 kostenlos', 'fxbroker', 'metatrader 5 demo', 'metatrader 4 download pc', 'metatrader 4 for pc', 'fx forex', 'forex online account', '365tradingfx', 'how to close xm trading account', 'xemarket', 'metatrader 4 erfahrungen', 'xm markets', 'trade signal', 'metatrader 4 demo', 'george soros forex signals', 'xm investment', 'metatrader 5 handelsroboter', 'index zertifikat öl', 'fxt brokers', 'xm erfahrungen', 'gold ankauf neuss', 'metatrader erfahrungen', 'future dow jones', 'metatrader 5 broker', 'metatrader 4 xm', 'xm global mt4', 'cfx account', 'metatrader 4 online', 'metatrader 4 demo', 'how to trade on currency', 'nasdaq xm', 'metatrader 4 5', 'nasdaq:xm', 'forex legal'],
+                'Germany': ['download metatrader 4', 'metatrader 4 download', 'meta trader', 'mt4 download', 'xm broker', 'metatrader4', 'free trading platform', 'trademax global', 'best online broker australia index funds', 'buy index funds australia', 'think trader', 'australian brokers', 'trade graph', 'brokers in australia', 'torfx au', 'forex trading app australia', 'commsec demo account', 'how to invest in the asx200', 'mt4 webtrader', 'low spread brokers', 'free trading app', 'trade match', 'invest forex', 'best trading account australia', 'forextrading', 'xm webtrader', 'top 10 trading platforms australia', 'trading platform best', 'lowest spread forex broker', 'xm demo account', 'best trading software australia', 'mt4 app', 'is metatrader 4 free', 'high low australia', 'xm mt4', 'free day trading software', 'international broker', 'trade gold online', 'forex fx', 'virtual trading', 'xau/usd live chart', 'trading point', 'trade plus 500', 'gemforex', 'xm affiliate', 'metatrade', 'xmglobal', 'download metatrader 4 for mac', 'what is metatrader', 'octa forex', 'xm.com login', 'trade currency online', 'cfx account', 'metatrader 4 demo', 'fortrade australia', 'arrowteks', 'highest leverage forex broker australia', 'xm.com au', 'xm mt4 server', 'traderx.online reviews', 'foreign exchange market australia', 'renko charts mt4 download', 'superhero trading app australia', 'wealth from trading com au', 'wealth from trading.com', 'xm australia login', 'marketsbroker', 'xm investment', 'xm au login', 'xm forex wiki', 'xm malaysia login', 'how to open real account in metatrader 4', 'xm stock trading', 'how to get metatrader 4 on pc', 'forex trading australia for beginners', 'nasdaq xm', 'cotps trading', 'xm mt4 download for laptop', 'synergyfx', 'forex4 you', 'tradefree', 'analystq', 'ing share trading account', 'forex action', 'xm nasdaq', 'no deposit bonus forex 2022', 'mt 4 5', 'mt4 brokers with stocks', 'metatrader 4 setup', 'low spread forex brokers scalping', 'xm malaysia', 'broker to broker transfer', 'nasdaq:xm', 'forex broker comparison spread', 'alert trading', 'best forex free signals', 'xm mt5 login', 'webtrader online', 'cxm forex', 'best mt4 expert advisors', 'forex legal', 'auto trader platform', 'world wide brokers', 'how to begin trading forex', 'xm forex leverage', 'intelligence prime capital mt4', 'forex brokers with lowest spreads', 'forex trading manager', 'forex broker with high leverage', 'international trade platform', 'ecn brokers in usa', 'forex broker listing', 'forex signal best', 'platform forex', 'metatrader 4 download for mac', 'traders australia', 'live trading platforms', 'course for forex trading', 'shares trading online', 'worldwide forex', 'trade portals', 'us ecn forex brokers', 'metatrader4 login', 'investing in indexes', 'web trader platform', 'live trade signals', 'trading gold australia', 'trading commodities australia', 'trading currency forex', 'commodity trading in australia', 'forex trader uk', 'australia gold trading', 'swap in forex trading', 'trade online australia', 'best brokers of forex', 'forex trade course online', 'wall street forex', 'best invest platform', 'fx trading account', 'mt4 charts', 'forex global market', 'the best forex broker', 'forex broker mt4', 'option trading usa', 'index trader', 'forextrader', 'best brokers uk', 'trading platforms for forex', 'xm metatrader 5', 'audusd technical analysis', 'fx trading signals', 'xm trades', 'currency trader app', 'algorithmic trading platforms', 'best laptop for forex trading', 'best international trading platform', 'uk trading platforms', 'forex demo account metatrader 4', 'australian cfd', 'forex trader platform', 'fx accounts', 'trading currency app', 'day trade simulator', 'high leverage brokers', 'best currency to trade right now', 'forex broker comparisons', 'learning forex trading', 'xm plataforma', 'how to open forex account', 'forex trading usa', 'best forex signal app', 'free forex trade', 'micro account forex', 'world share index', 'coinage trading', 'us ecn brokers', 'usforex', 'commodities trading australia', 'xm trading mt4', 'mt4 download for pc 64 bit', 'autotrade forex', 'stocks xm', 'futures brokers in australia', 'rich forex traders', 'live trading forex', 'autotrading bot', 'fx signals', 'trading 365', 'ctrader vs metatrader 4', 'markets mt4', 'xm m', 'swap-free account forex', 'low spread us forex brokers', 'trades fx option', 'currency market live', 'brokers for mt4', 'xm com login', 'best free forex signals', 'forex signals live', 'xm limassol', 'forex aus', 'mt4 for mac download', 'mt4 stocks', 'indian forex trading', 'best broker for metatrader 4', 'xm trading view', 'forex trading free', 'best mt4 brokers', 'forex metatrader', 'buy gold from dubai online', 'start trading forex', 'share market online', 'ifs markets', 'xm log in', 'best broker for forex trading', 'forex broker metatrader 4', 'daily forex signals', 'point trading australia', 'swap fee forex', 'metatrader 5 for mac', 'metatrader 4 multiterminal', 'metatrader 4 apk download', 'mplusfx', 'lot size in forex', 'indices forex', 'mt4 software', 'best forex brokers in australia', 'forex us brokers', 'forex signal free', 'auto trading platform', 'trading web', 'forex trading forums', 'traderush', 'australian trading', 'robot trading in forex', 'mirror trading platform', 'study trading', 'trading gold on forex', 'online forex', 'metatrader 4 download mac', 'mt4 one click trading', 'forex trading account opening', 'trading system for forex', 'spy trader', 'forex live account', 'trading brokers in australia', 'forex 4 you', 'xm mt4 download', 'trading forex gold', 'xm forex broker', 'fx forex', 'admiral trading', 'binaryoptions', 'forex broker new zealand', 'mt4 api', 'mt4 brokers usa', 'forex mt4 brokers', 'cryptocurrencies how to start', 'mx forex', 'demo trader', 'traders forex', 'forex trading signals free', 'free forex trading', 'trading 4x', 'xm stocks', 'interactive brokers trading platform', 'tradingview platform', 'which trading market is open now', 'best brokers for metatrader 4', 'trade view forex', 'trading online for beginners', 'xm copy trade', 'broker windsor', 'forex invest', 'forex leverage us', 'elite trader', 'forex mt4', 'login xm', 'mt4 chart', 'metatrader brokers', 'forexpr', 'mt5 brokers', 'demo account for trading', 'xm account', 'trading charts free', 'metatrader 4 apk', 'xm trade', 'best brokerage accounts', 'trading xm', 'ea trade', 'demo account xm', 'signal trade', 'crude oil investing', 'forex trade journal template', 'metatrader 4 pc download', 'xm platform', 'forex trading indicators', 'trading signals free', 'multibank fx', 'best currency to invest in', 'forexsignal', 'top 10 forex broker', 'oil etf stock', 'forex trade investment', 'online money earn', 'webtrader mt4', 'forex services', 'forex brokers no deposit bonus', 'high leverage broker', 'financial trading online', 'saxo group', 'forex trading journal template', 'forex live chart', 'forex chart online', 'forex investing', 'fxtrader', 'weekend trading forex', 'mt4 free download', 'what is metatrader 5', 'currency brokers', 'capital forex trading', 'forex trading capital', 'xm metatrader', 'broker for forex trading', 'market forex', 'open a forex trading account', 'free signal forex', 'top 10 forex brokers', 'fx broker', 'metatrader 4 free download', 'forexpros', 'how to buy gold stock'],
+                'Argentina': ['trade view', 'meta trader 4', 'metatrader4', 'meta trader 5', 'micro lot forex', 'mt4 account', 'indice nikkei', 'social trading forex', 'signal provider forex', 'meta trading 4', 'trader forex', 'que es el forex', 'mx broker', 'forex en chile', 'criptomonedas inversiones', 'xm trades', 'que forex', 'como invertir en forex', 'trades forex', 'forex chile reclamos', 'meta 5 trader', 'crypto bot trading', 'copy a trader', 'como invertir en s&p 500', 'aprender forex', 'bitcoins stock', 'gameshop stock', 'crypto traders', 'forex traders', 'hsi index', 'traders forex', 'stocks cat', 'forex invertir', 'hotforex mt4', 'bitcoins price', 'xm account', 'forex trade', 'bitcoins trading', 'bitcoins comprar', 'trading xm', 'exchanges crypto', 's&p 500 stock', 'dax alemán', 'mercados forex', 'bitcoins trade', 'trader crypto', 'future dow jones', 'copy traders', 'xm usuarios', 'que son forex', 'ibex index'],
+                'Austria': ['xm trading', 'trading xm', 'highlow markets', 'download metatrader 4 for pc', 'gamestop stock price', 'xm au', 'xm forex', 'is metatrader 4 free', 'how to buy gold stocks', 'xm mt4', 'international broker', 'xm account', 'virtual trading', 'xm affiliate', 'download metatrader 4 for mac', 'metatrader download', 'how to open forex trading account in pakistan', 'list of ecn brokers with mt4', 'forex no loss hedging strategy', 'fiverr forex', 'plus 500 demo mode', 'where to trade btcusd', 'freshforex 2021 bonus', 'xm de', 'öl indizes', 'aktienkauf deutsche bank', 'aktien kaufen ing', 'e trading frontiers', 'xm investment', 'live trading forex signals', 'xm global mt5', 'index zertifikat öl open end', 'www xmtrading', 'senarai broker forex yang sah di malaysia', 'just forex mt4', 'xm erfahrung', 'lohnt es sich basf-aktien zu kaufen', 'trading-portale', 'rohstoffbörse deutschland', 'www goldseiten de', 'goldkauf würzburg', 'brokervergleich 2022', 'move xm', 'xm headquarters', 'trade coins online', 'forex trade bonus', 'forex broker ohne nachschusspflicht', 'forex signal software free download', 'trading software for pc free download', 'metatrader 5 32 bit', 'fx blue trading simulator mt5', 'broker forex spread rendah', 'ölaktien 2022', 'kostenloses trading', 'xm affiliate platform login', 'forex signal trader', 'forex-signale kostenlos', 'cfd öl', 'expert advisor for mt4', 'metatrader 4 download macbook air', 'ölreiches system trading', 'goldhandel heraeus', 'forex broker directory', 'aktien depot deutsche bank', 'one click trading forex', 'xm trading minimum deposit', 'tradeinvest90', 'xm $30 bonus conditions', 'xm withdrawal problems', 'goldmarkt deutschland', 'dollarkonto', 'metatrader 4 for windows download', 'trading signale app', 'metatrader 4 macbook', 'forex thrive', 'metatrader 4 mac download', 'online trading registration', 'halal forex', 'vdax handeln', 'forex broker vergleichen', 'trading signale kaufen', 'proaurum goldbarren', 'metatrader 4 for windows 10', 'connecting binance to metatrader 5', 'aktie kaufen commerzbank', 'silber kaufen in der schweiz', 'trading on mt4', 'trading platform with api', 'aktien kaufen ubs', 'download metatrader 4 windows', 'trading-broker', 'icmarkets webtrader', 'gold kaufen mit paypal', 'forex tr', 'xm cfd', 'metatrader 4 download for mac', 'xm trade app', 'forex low spread broker', 'trade point germany gmbh', 'broker ohne spread', 'rohstoff trading', 'trade xm', 'how long does xm withdrawal take', 'forex market trading time', 'gold münchen kaufen', 'forex live signals free', 'xm withdrawal time', 'trading platform for forex', 'copy trading xm', 'forex no spread', 'trading online game', 'metatrader bot', 'xm app download for pc', 'trading online platforms', 'forex broker germany', 'shigura mt5', 'mt5 xm login', 'brokers with no deposit bonus 2022', 'demo account on forex', 'best forex trade', 'forex software trading', 'meta4 download', 'usd eur fx', 'forex trader deutsch', 'xm 24', 'meta trading 4 download', 'how to trade for free', 'online-handelsplattform', 'xm broker erfahrung', 'signal trading', 'meta trader download', 'mt5trader', 'download metatrader 4 pc', 'forex bots', 'mt5 app', 'forex trading signals live', 'xtrade broker', 'veracity markets mt4', 'managed account forex', 'virtual trading platform', 'meta 5 trader', 'metatrader alternative', 'pivotal point trading', 'download metatrader 4 for windows', 'trader 4', 'trading mt4', 'metatrader 4 software download', 'mt4 trade copier', 'trader mt4', 'forex broker nz', 'forexrobot', 'metatrader 5 geld auszahlen', 'crude oil future', 'trading with pivot points', 'micro lots broker', 'trading forex demo account', 'mt4 markets', 'best forex broker in germany', 'mt4 market', 'chart xau usd', 'trading platforms forex', 'brokerage usa', 'forex money', 'software for automated trading', 'mt4 web', 'mt5 copy trade', '2 xm', 'forex invest', 'metaquotes mt5', 'metatrader 6', 'xm market', 'trading.point gmbh', 'free trading platform uk', 'welche trading plattform', 'metatrader 4 mt4 download', 'metatrader 4 copy trading', 'trading point gmbh', 'high frequency forex trading', 'mate trader 5', 'mt4 expert advisors', 'mt5 trading', 'robinhood trading platform', 'metatrader 4 download for windows', 'forex demo account login', 'broker metatrader 4', 'mt4 download for pc', 'web trader login', 'zero spread broker', 'xm stocks', 'forex bonus', 'online forex', 'forex best signals', 'metatrader for mac', 'meta 4 download', 'traders forex', 'günstigster broker', 'best forex brokers in germany', 'traden demokonto', 'mt4 signals', 'trading xm', 'login xm', 'metatrader web trader', 'forex no deposit', 'how to trade online and make money', 'metatrader4 web', 'forex xm', 'best ecn brokers forex', 'free trading signals', 'mt4 windows', 'xm trade', 'markets forex', 'currency trade', 'meta trading 4', 'website to make money online', 'forexbrokers', 'xm broker bono', 'best forex broker in europe', 'download meta trader 5', 'trading center', 'indicator metatrader 4', 'invest xauusd', 'xm global limited', 'gold preisvergleich de', 'xmglobal', 'meta 5', 'mt4', 'welche broker sind seriös', 'devisenhandel für anfänger', 'trading signals free', 'xm.com login', 'onlinetrader', 'metatrader demokonto', 'metatrader website', 'trader xm', 'goldkauf deutschland', 'best forex broker europe', 'brokerage account', 'metatrader 4 iphone', 'no deposit forex bonus', 'insta forex', 'trading test', 'bonus without deposit', 'metatrader 4 software', 'forex ecn broker', 'pivot points trading', 'trading in forex online', 'x trades', 'xtrade brokers', 'forex trading platforms', 'brokerage trading', 'mt4 xm', 'my forex', 'xm global login', 'mt4 expert advisor'],
+                'Canada': ['metatrader 5', 'xm broker', 'traiding', 'forex chile', 'mejor broker chile', 'bitmex', 'trading forex', 'metatrader 4 pc', 'descargar mt4', 'meta trader 4', 'invertir en bitcoins', 'fx trading', 'ether usd', 'forex que es', 'go4rex chile', 'e trading', 'crypto exchanges', 'trading crypto', 'que es el forex', 'forex en chile', 'como invertir en forex', 'forex chile reclamos', 'crypto market app', 'crypto trade', 'aprender forex', 'bitcoins stock', 'crypto traders', 'forex traders', 'hsi index', 'traders forex', 'stocks cat', 'forex invertir', 'hotforex mt4', 'bitcoins price', 'xm account', 'forex trade', 'bitcoins trading', 'bitcoins comprar', 'trading xm', 'exchanges crypto', 's&p 500 stock', 'dax alemán', 'mercados forex', 'bitcoins trade', 'trader crypto', 'future dow jones', 'copy traders', 'xm usuarios', 'que son forex', 'ibex index'],
+                'Chile': []
+            };
+
+            const countriesGrid = document.querySelector('.countries-grid');
+            const keywordsContainer = document.querySelector('.keywords-container');
+            const chartLabels = [];
+            const chartData = [];
+
+            // Generate Country Cards and Keyword Dropdowns
+            countriesData.forEach(country => {
+                // Create Country Card
+                const card = document.createElement('div');
+                card.className = 'country-card';
+                card.innerHTML = `
+                    <img src="https://flagsapi.com/${country.code}/shiny/64.png" alt="Flag of ${country.name}">
+                    <span>${country.name}</span>
+                `;
+                countriesGrid.appendChild(card);
+                
+                // Create Keyword Dropdown
+                const countryKeywords = keywordsData[country.name] || [];
+                if (countryKeywords.length > 0) {
+                     const details = document.createElement('details');
+                    const summary = document.createElement('summary');
+                    summary.textContent = country.name;
+                    
+                    const list = document.createElement('ul');
+                    list.className = 'keywords-list';
+                    countryKeywords.forEach(kw => {
+                        const li = document.createElement('li');
+                        li.textContent = kw;
+                        list.appendChild(li);
+                    });
+                    
+                    details.appendChild(summary);
+                    details.appendChild(list);
+                    keywordsContainer.appendChild(details);
+                    
+                    // Prepare data for the chart
+                    chartLabels.push(country.name);
+                    chartData.push(countryKeywords.length);
+                }
+            });
+            
+            // Generate Chart
+            const ctx = document.getElementById('keywordsChart').getContext('2d');
+            const keywordsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'No. of Keywords',
+                        data: chartData,
+                        backgroundColor: [
+                            'rgba(35, 19, 114, 0.8)', // #231372
+                            'rgba(32, 226, 200, 0.8)', // #20E2C8
+                            'rgba(97, 6, 175, 0.8)',   // #6106AF
+                        ],
+                        borderColor: [
+                            'rgba(35, 19, 114, 1)',
+                            'rgba(32, 226, 200, 1)',
+                            'rgba(97, 6, 175, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Volume of Keywords by Country',
+                            font: {
+                                size: 18,
+                                family: "'Barlow', sans-serif"
+                            },
+                            color: '#231372'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
