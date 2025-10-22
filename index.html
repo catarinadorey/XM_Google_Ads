@@ -86,7 +86,7 @@
             text-align: center;
         }
         
-        section:nth-child(even) { /* Switched to even for better alternating */
+        section:nth-child(odd) {
             background-color: var(--background-light);
         }
 
@@ -228,6 +228,7 @@
             border-radius: 8px;
             border: 1px solid #ddd;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: left;
         }
 
         summary {
@@ -252,7 +253,7 @@
             transition: transform 0.2s;
         }
         
-        details[open] summary::after {
+        details[open] > summary::after {
             transform: rotate(45deg);
         }
 
@@ -277,6 +278,36 @@
             padding: 2em;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* --- Keyword Proposal Section --- */
+        .proposal-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5em;
+            margin-top: 2em;
+        }
+        .language-container {
+            padding: 0.5em 1em 1em 1em;
+        }
+        .language-container details {
+            border-color: #e9e9e9;
+            background-color: #fdfdfd;
+            margin-top: 1em;
+        }
+        .proposal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+        .proposal-table th, .proposal-table td {
+            padding: 0.75em;
+            border-bottom: 1px solid #eee;
+        }
+        .proposal-table th {
+            background-color: #f7f7f7;
+            font-weight: 500;
+            text-align: left;
         }
     </style>
 </head>
@@ -420,6 +451,15 @@
                 <p style="font-size: 1.2em;">According to our analysis, XM <strong>is not present in any country</strong> with Meta Ads (Facebook, Instagram), Snapchat and Twitter campaigns.</p>
             </div>
         </section>
+        
+        <section id="keyword-proposal">
+            <div class="container">
+                <h2>Keyword Proposal</h2>
+                <p>A curated list of proposed keywords for market expansion, including language and average monthly search volume.</p>
+                <div class="proposal-container">
+                    </div>
+            </div>
+        </section>
     </main>
     
     <script>
@@ -452,7 +492,7 @@
                 'Canada': ['xm trading', 'trading xm'],
                 'Chile': ['metatrader 5', 'xm broker', 'traiding', 'forex chile', 'forex trading', 'copy trading', 'mejor broker chile', 'bitmex', 'trading forex', 'metatrader 4 pc', 'descargar mt4', 'crypto exchange', 'metatrader4', 'meta trader 4', 'invertir en bitcoins', 'fx trading', 'ether usd', 'gamestop stock price', 'forex que es', 'ethusd', 'crypto trading', 'go4rex chile', 'ontega plataforma', 'e trading', 'indice nikkei', 'crypto exchanges', 'trading crypto', 'meta trading 4', 'trader forex', 'metatrader 4 mac', 'que es el forex', 'mx broker', 'forex en chile', 'criptomonedas inversiones', 'xm trades', 'que forex', 'como invertir en forex', 'trades forex', 'forex chile reclamos', 'crypto market app', 'meta 5 trader', 'crypto bot trading', 'copy a trader', 'crypto trade', 'como invertir en s&p 500', 'aprender forex', 'bitcoins stock', 'gameshop stock', 'crypto traders', 'forex traders', 'hsi index', 'traders forex', 'stocks cat', 'forex invertir', 'hotforex mt4', 'bitcoins price', 'xm account', 'forex trade', 'bitcoins trading', 'bitcoins comprar', 'trading xm', 'exchanges crypto', 's&p 500 stock', 'dax alemán', 'mercados forex', 'bitcoins trade', 'trader crypto', 'future dow jones', 'copy traders', 'xm usuarios', 'que son forex', 'ibex index']
             };
-
+            
             // Sort countries alphabetically
             countriesData.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -562,6 +602,119 @@
                     }
                 }
             });
+
+            // --- Keyword Proposal Section ---
+            const proposalData = {
+                "Iraq": {
+                    "Arabic": [
+                        {"keyword": "تداول الأسهم","volume": "1.3K"},
+                        {"keyword": "منصات تداول الأسهم","volume": "1.1K"},
+                        {"keyword": "تداول","volume": "8.1K"},
+                        {"keyword": "سوق الأسهم","volume": "1.3K"},
+                        {"keyword": "تداول العملات","volume": "1.3K"}
+                    ],
+                    "English": [
+                        {"keyword": "stock trading","volume": "1.3K"},
+                        {"keyword": "forex trading","volume": "1.3K"},
+                        {"keyword": "trading","volume": "2.9K"},
+                        {"keyword": "online trading","volume": "1.3K"},
+                        {"keyword": "forex","volume": "1.3K"}
+                    ]
+                },
+                "UAE": {
+                    "English": [
+                        {"keyword": "trading","volume": "22.2K"},
+                        {"keyword": "forex trading","volume": "12.1K"},
+                        {"keyword": "online trading","volume": "4.4K"},
+                        {"keyword": "stock trading","volume": "2.9K"},
+                        {"keyword": "currency trading","volume": "1.3K"}
+                    ]
+                },
+                "Mexico": {
+                    "Spanish": [
+                        {"keyword": "trading","volume": "60.5K"},
+                        {"keyword": "forex","volume": "22.2K"},
+                        {"keyword": "que es trading","volume": "18.1K"},
+                        {"keyword": "plataformas de trading","volume": "5.4K"},
+                        {"keyword": "trading online","volume": "1.9K"}
+                    ]
+                },
+                "Colombia": {
+                    "Spanish": [
+                        {"keyword": "trading","volume": "49.5K"},
+                        {"keyword": "que es el trading","volume": "14.8K"},
+                        {"keyword": "forex","volume": "12.1K"},
+                        {"keyword": "plataformas de trading","volume": "2.9K"},
+                        {"keyword": "trading online","volume": "1K"}
+                    ]
+                },
+                "Qatar": {
+                    "Arabic": [
+                        {"keyword": "تداول","volume": "5.4K"},
+                        {"keyword": "تداول العملات","volume": "1K"},
+                        {"keyword": "تداول الاسهم للمبتدئين","volume": "1.3K"},
+                        {"keyword": "منصات تداول","volume": "1.6K"},
+                        {"keyword": "تداول الأسهم","volume": "1.3K"}
+                    ],
+                    "English": [
+                        {"keyword": "trading","volume": "8.1K"},
+                        {"keyword": "forex trading","volume": "2.9K"},
+                        {"keyword": "online trading","volume": "1.3K"},
+                        {"keyword": "stock trading","volume": "1K"},
+                        {"keyword": "forex","volume": "1.3K"}
+                    ]
+                },
+                "Turkey": {
+                    "Turkish": [
+                        {"keyword": "forex","volume": "60.5K"},
+                        {"keyword": "borsa","volume": "90.5K"},
+                        {"keyword": "hisse senedi","volume": "60.5K"},
+                        {"keyword": "online yatırım","volume": "1.3K"},
+                        {"keyword": "yatırım","volume": "22.2K"}
+                    ]
+                }
+            };
+
+            const proposalContainer = document.querySelector('.proposal-container');
+            for (const country in proposalData) {
+                const countryDiv = document.createElement('div');
+                countryDiv.className = 'proposal-country';
+
+                const countryDetails = document.createElement('details');
+                const countrySummary = document.createElement('summary');
+                countrySummary.textContent = country;
+                countryDetails.appendChild(countrySummary);
+
+                const languageContainer = document.createElement('div');
+                languageContainer.className = 'language-container';
+
+                for (const language in proposalData[country]) {
+                    const langDetails = document.createElement('details');
+                    const langSummary = document.createElement('summary');
+                    langSummary.textContent = language;
+                    langDetails.appendChild(langSummary);
+                    
+                    const table = document.createElement('table');
+                    table.className = 'proposal-table';
+                    table.innerHTML = `<thead><tr><th>Keyword</th><th>Avg. Monthly Searches</th></tr></thead>`;
+                    const tbody = document.createElement('tbody');
+
+                    proposalData[country][language].forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${item.keyword}</td><td>${item.volume}</td>`;
+                        tbody.appendChild(row);
+                    });
+
+                    table.appendChild(tbody);
+                    langDetails.appendChild(table);
+                    languageContainer.appendChild(langDetails);
+                }
+
+                countryDetails.appendChild(languageContainer);
+                countryDiv.appendChild(countryDetails);
+                proposalContainer.appendChild(countryDiv);
+            }
+
         });
     </script>
 
